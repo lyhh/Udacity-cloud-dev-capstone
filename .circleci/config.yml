@@ -36,9 +36,7 @@ jobs:
       - serverless-framework/setup            
       - run:
           name: Serverless deploy
-          command: |
-            serverless
-            sls deploy
+          command: sls deploy
 
 workflows:
   # Below is the definition of your workflow.
