@@ -38,7 +38,7 @@ jobs:
           name: Serverless deploy
           command: |
             serverless
-            sls deploy --verbose
+            sls deploy
 
 workflows:
   # Below is the definition of your workflow.
