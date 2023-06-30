@@ -31,6 +31,8 @@ jobs:
             cd ~/backend
             npm update --save
             npm audit fix
+      - aws-cli/setup
+      - serverless/setup            
       - run:
           name: Serverless deploy
           command: |
