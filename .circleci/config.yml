@@ -6,7 +6,7 @@ orbs:
   # The Node.js orb contains a set of prepackaged CircleCI configuration you can utilize
   # Orbs reduce the amount of configuration required for common tasks.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
-  node: circleci/node@4.7
+  node: circleci/node@5.1.0
   aws-cli: circleci/aws-cli@1.0
   serverless-framework: circleci/serverless-framework@2.0
 
@@ -32,7 +32,7 @@ jobs:
             sudo npm i -g serverless
             cd backend
             npm update --save
-            npm audit fix
+            npm audit fix --force
       - aws-cli/setup
       - serverless-framework/setup            
       - run:
