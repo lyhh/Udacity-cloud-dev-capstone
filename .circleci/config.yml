@@ -30,7 +30,6 @@ jobs:
           name: Install Serverless CLI and dependencies
           command: |
             sudo npm i -g serverless
-            cd ~/backend
             npm update --save
             npm audit fix
       - aws-cli/setup
@@ -38,7 +37,6 @@ jobs:
       - run:
           name: Serverless deploy
           command: |
-            echo $pwd
             serverless
             sls deploy --verbose
 
