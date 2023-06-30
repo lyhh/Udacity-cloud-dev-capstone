@@ -8,26 +8,28 @@ orbs:
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@4.7
   aws-cli: circleci/aws-cli@1.0
-  serverless: circleci/serverless-framework@1.0
+  serverless-framework: circleci/serverless-framework@2.0
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   backend-build:
-    executor: serverless/default
+    executor: serverless-framework/default
     working_directory: ~/backend      
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
       # Checkout the code as the first step.
       - checkout
+      - aws-cli/install
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm
+          pkg-manager: npm     
       - run:
           name: Install Serverless CLI and dependencies
           command: |
+            sudo npm i -g serverless
             cd ~/backend
             npm update --save
             npm audit fix
