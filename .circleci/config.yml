@@ -13,9 +13,9 @@ orbs:
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
   backend-build:
-    executor: serverless-framework/default
     docker:
-      - image: cimg/node:16.10        
+      - image: cimg/node:16.10  
+    executor: serverless-framework/default
     working_directory: ~/backend      
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
@@ -23,11 +23,13 @@ jobs:
       # Checkout the code as the first step.
       - checkout
       - aws-cli/install
+      - aws-cli/setup
+      - serverless-framework/setup    
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
-      - node/install-packages:
-          # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm     
+      # - node/install-packages:
+      #     # If you are using yarn, change the line below from "npm" to "yarn"
+      #     pkg-manager: npm     
       - run:
           name: Install Serverless CLI and dependencies
           command: |
@@ -35,8 +37,7 @@ jobs:
             cd backend
             npm update --save
             npm audit fix --force
-      - aws-cli/setup
-      - serverless-framework/setup            
+        
       - run:
           name: Serverless deploy
           command: sls deploy
