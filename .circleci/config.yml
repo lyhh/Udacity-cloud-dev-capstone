@@ -34,7 +34,7 @@ jobs:
             npm update --save
             npm audit fix
       - aws-cli/setup
-      - serverless/setup            
+      - serverless-framework/setup            
       - run:
           name: Serverless deploy
           command: |
