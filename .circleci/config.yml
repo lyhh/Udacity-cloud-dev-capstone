@@ -41,7 +41,9 @@ jobs:
         
       - run:
           name: Serverless deploy
-          command: sls deploy
+          command: |
+            cd backend
+            sls deploy
 
 workflows:
   # Below is the definition of your workflow.
