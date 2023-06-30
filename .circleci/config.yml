@@ -37,8 +37,7 @@ jobs:
           name: Serverless deploy
           command: |
             cd ~/backend
-            serverless
-            serverless deploy --verbose
+            sls deploy --verbose
 
 workflows:
   # Below is the definition of your workflow.
