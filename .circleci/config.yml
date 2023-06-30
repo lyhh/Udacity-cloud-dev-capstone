@@ -35,8 +35,9 @@ jobs:
           command: |
             sudo npm i -g serverless
             cd backend
-            npm update --save
-            npm audit fix --force
+            npm ci
+            # npm update --save
+            # npm audit fix --force
         
       - run:
           name: Serverless deploy
