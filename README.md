@@ -1,7 +1,7 @@
 # Capstone project: Serverless TODOs App
 Dear Udacity mentor,
 
-In this capstone project, I reuse project 4 Serverless TODO app with refined UI and additiional feature.
+In this capstone project, I reuse project 4 Serverless TODO app with refined UI and additional feature.
 
 ## New features
 ### Improve UI
