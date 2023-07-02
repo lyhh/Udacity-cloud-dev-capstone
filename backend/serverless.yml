@@ -33,20 +33,6 @@ provider:
     # Enable API Gateway logs
     restApi: true
 
-  iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action:
-            - xray:PutTelemetryRecords
-            - xray:PutTraceSegments
-          Resource: "*"
-        - Effect: Allow
-          Action:
-            - s3:PutBucketPolicy
-          Resource:
-            - 'arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}'
-
 custom:
   documentation:
     api:
