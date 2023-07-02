@@ -4,6 +4,8 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { createLogger } from '../utils/logger'
 import { TodoItem } from '../models/TodoItem'
 import { TodoUpdate } from '../models/TodoUpdate';
+import { TodoPage } from '../models/TodoPage';
+import { GetTodosPageRequest } from '../requests/GetTodosPageRequest';
 
 var AWSXRay = require('aws-xray-sdk')
 const XAWS = AWSXRay.captureAWS(AWS)
@@ -33,6 +35,29 @@ export class TodosAccess {
         const items = result.Items
         logger.info('Todo Items', items)
         return items as TodoItem[]
+    }
+
+    async getTodoPage(userId: string, getReq: GetTodosPageRequest): Promise<TodoPage> {
+        logger.info('Getting Todo Items by page', getReq)
+
+        const result = await this.docClient.query({
+            TableName: this.todoTable,
+            IndexName: this.todoIdIndex,
+            KeyConditionExpression: 'userId = :userId',
+            ExpressionAttributeValues: {
+                ':userId': userId
+            },
+            Limit: getReq.limit,
+            // ScanIndexForward: false,
+            ExclusiveStartKey: getReq.nextPageKey
+        }).promise()
+
+        const items = result.Items
+        logger.info('Todo Items', items)
+        return {
+            items: (result.Items as TodoItem[]),
+            nextKey: encodeNextKey(result.LastEvaluatedKey)
+        } as TodoPage
     }
 
     async createTodoItem(item: TodoItem): Promise<TodoItem> {
@@ -95,3 +120,20 @@ export class TodosAccess {
           .promise();
       }
 }
+
+  
+  /**
+   * Encode last evaluated key using
+   *
+   * @param {Object} lastEvaluatedKey a JS object that represents last evaluated key
+   *
+   * @return {string} URI encoded last evaluated key
+   */
+  function encodeNextKey(lastEvaluatedKey) {
+    if (!lastEvaluatedKey) {
+      return null
+    }
+    logger.info(`encodeNextKey:`, lastEvaluatedKey)
+
+    return encodeURIComponent(JSON.stringify(lastEvaluatedKey))
+  }

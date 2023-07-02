@@ -14,3 +14,59 @@ export function getUserId(event: APIGatewayProxyEvent): string {
 
   return parseUserId(jwtToken)
 }
+
+/**
+ * Get value of the limit parameter.
+ *
+ * @param {Object} event HTTP event passed to a Lambda function
+ *
+ * @returns {number} parsed "limit" parameter
+ */
+export function parseLimitParameter(event) {
+  const limitStr = getQueryParameter(event, 'limit')
+
+  if (!limitStr) {
+    return undefined
+  }
+
+  const limit = parseInt(limitStr, 10)
+  if (limit <= 0) {
+    throw new Error('Limit should be positive')
+  }
+  return limit
+}
+
+/**
+ * Get value of the limit parameter.
+ *
+ * @param {Object} event HTTP event passed to a Lambda function
+ *
+ * @returns {Object} parsed "nextKey" parameter
+ */
+export function parseNextKeyParameter(event) { 
+  const nextKeyStr = getQueryParameter(event, 'nextKey')
+
+  if (!nextKeyStr) {
+    return undefined
+  }
+  const uriDecoded = decodeURIComponent(nextKeyStr)
+
+  return JSON.parse(uriDecoded)
+}
+
+/**
+ * Get a query parameter or return "undefined"
+ *
+ * @param {Object} event HTTP event passed to a Lambda function
+ * @param {string} name a name of a query parameter to return
+ *
+ * @returns {string} a value of a query parameter value or "undefined" if a parameter is not defined
+ */
+function getQueryParameter(event: { queryStringParameters: any }, name: string) {
+  const queryParams = event.queryStringParameters
+  if (!queryParams) {
+    return undefined
+  }
+
+  return queryParams[name]
+}

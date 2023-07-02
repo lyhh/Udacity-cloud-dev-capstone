@@ -7,6 +7,8 @@ import { createLogger } from '../utils/logger'
 import * as uuid from 'uuid'
 // import * as createError from 'http-errors'
 import { TodoUpdate } from '../models/TodoUpdate';
+import { GetTodosPageRequest } from '../requests/GetTodosPageRequest';
+import { TodoPage } from '../models/TodoPage';
 
 // Implement businessLogic
 const logger = createLogger('TodoBusinessLogic')
@@ -16,6 +18,11 @@ const attachmentUtils = new AttachmentUtils();
 export async function getTodosForUser(userId: string): Promise<TodoItem[]> {
     logger.info(`Get All Todos for User ${userId}`)
     return await todosAccess.getTodoItems(userId);
+}
+
+export async function getTodosPage(userId: string, getReq: GetTodosPageRequest): Promise<TodoPage> {
+    logger.info(`Get Todos page of ${getReq.limit} for User ${userId} `)
+    return await todosAccess.getTodoPage(userId, getReq)
 }
 
 export async function createTodo(user: string, createReq: CreateTodoRequest): Promise<TodoItem> {
